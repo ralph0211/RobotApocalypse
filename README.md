@@ -4,7 +4,11 @@ This is a REST API built using .NET 6 that stores information about survivors an
 
 ## Setup
 
+### Database Setup
+In the project root path, execute the following command:
+`dotnet ef database update`
 
+The database is a Sqlite database named Apocalypse.db which will be added to the project root.
 
 ## Use Cases
 
