@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RobotApocalypse.Data;
 using RobotApocalypse.Models;
@@ -32,23 +27,23 @@ namespace RobotApocalypse.Controllers
             return await _context.Resources.ToListAsync();
         }
 
-        // GET: api/Resources/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Resource>> GetResource(int id)
-        {
-          if (_context.Resources == null)
-          {
-              return NotFound();
-          }
-            var resource = await _context.Resources.FindAsync(id);
+        //// GET: api/Resources/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Resource>> GetResource(int id)
+        //{
+        //  if (_context.Resources == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    var resource = await _context.Resources.FindAsync(id);
 
-            if (resource == null)
-            {
-                return NotFound();
-            }
+        //    if (resource == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return resource;
-        }
+        //    return resource;
+        //}
 
         // PUT: api/Resources/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -96,25 +91,25 @@ namespace RobotApocalypse.Controllers
             return CreatedAtAction("GetResource", new { id = resource.Id }, resource);
         }
 
-        // DELETE: api/Resources/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteResource(int id)
-        {
-            if (_context.Resources == null)
-            {
-                return NotFound();
-            }
-            var resource = await _context.Resources.FindAsync(id);
-            if (resource == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/Resources/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteResource(int id)
+        //{
+        //    if (_context.Resources == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var resource = await _context.Resources.FindAsync(id);
+        //    if (resource == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Resources.Remove(resource);
-            await _context.SaveChangesAsync();
+        //    _context.Resources.Remove(resource);
+        //    await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         private bool ResourceExists(int id)
         {
