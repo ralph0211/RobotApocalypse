@@ -11,12 +11,10 @@ namespace RobotApocalypse.Dtos
 
         public string Gender { get; set; }
 
-        //public bool IsInfected { get; set; }
-
         public double LastLocationLatitude { get; set; }
 
         public double LastLocationLongitude { get; set; }
 
-        public IEnumerable<Resource> Resources { get; set; }
+        public IEnumerable<int> Resources { get; set; }
     }
 }

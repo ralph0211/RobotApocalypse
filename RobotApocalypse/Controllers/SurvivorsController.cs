@@ -61,7 +61,6 @@ namespace RobotApocalypse.Controllers
             var json = JsonSerializer.Serialize(survivors, options);
 
             return Content(json, "application/json");
-            //return survivors;
         }
 
         // GET: api/Survivors/5
@@ -179,6 +178,9 @@ namespace RobotApocalypse.Controllers
             } catch (EntityNotFoundException ex)
             {
                 return BadRequest(ex.Message);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 
@@ -198,11 +200,10 @@ namespace RobotApocalypse.Controllers
             return Ok(query);
         }
 
-        [HttpGet("infectionList")]
-        public async Task<IActionResult> InfectionList(InfectionListQueryDto request)
+        [HttpGet("infectionList/{isInfected}")]
+        public async Task<IActionResult> InfectionList(bool isInfected)
         {
-            //option to toggle between infected/uninfected only or all
-            if (request.IsInfected)
+            if (isInfected)
             {
                 var list = await _context.Survivors.Where(s => s.IsInfected).ToListAsync();
                 return Ok(list);

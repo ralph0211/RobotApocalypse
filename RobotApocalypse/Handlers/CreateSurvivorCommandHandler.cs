@@ -15,7 +15,6 @@ namespace RobotApocalypse.Handlers
         }
         public async Task<long> Handle(CreateSurvivorCommandDto request, CancellationToken cancellationToken)
         {
-            //throw new NotImplementedException();
             if (_context.Survivors == null)
             {
                 throw new Exception("Entity set 'RobotContext.Survivors' is null.");
@@ -26,13 +25,27 @@ namespace RobotApocalypse.Handlers
                 Age = request.Age,
                 Name = request.Name,
                 Gender = request.Gender,
-                //IsInfected = request.IsInfected,
                 LastLocationLatitude = request.LastLocationLatitude,
                 LastLocationLongitude = request.LastLocationLongitude,
-                Resources = request.Resources,
             };
             _context.Survivors.Add(survivor);
             await _context.SaveChangesAsync(cancellationToken);
+
+            if (request.Resources.Any())
+            {
+                var resToSave = new List<SurvivorResource>();
+                foreach(var resourceId in request.Resources)
+                {
+                    resToSave.Add(
+                        new SurvivorResource
+                            {
+                                ResourceId = resourceId,
+                                SurvivorId = survivor.Id,
+                            });
+                }
+
+                await _context.SaveChangesAsync();
+            }
 
             return survivor.Id;
         }
