@@ -1,6 +1,6 @@
 # Robot Apocalypse
 
-This is a REST API built using .NET 6 that stores information about survivors and the resources they own. This is a bare minimum fulfilment of the specifications of the project.
+This is a REST API built using .NET 6 that stores information about survivors and the resources they own. This is a bare minimum fulfilment of the specifications of the project. Most of the endpoints are the default scaffolded by .NET. However, a few have been updated to demonstrate use of MediatR
 
 ## Setup
 
