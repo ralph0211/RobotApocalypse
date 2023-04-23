@@ -1,4 +1,4 @@
-# RobotApocalypse
+# Robot Apocalypse
 
 This is a REST API built using .NET 6 that stores information about survivors and the resources they own. This is a bare minimum fulfilment of the specifications of the project.
 
@@ -56,9 +56,9 @@ Both reporterId and infectedSurvivorId have to be valid Id of Survivors
 To get a full list of robots from the server call the GET endpoint `api/Robots`
 To filter robots by he Category (Flying/Land) use `api/Robots/{category}` GET endpoint.
 `category` is a number representing the categories:
-``0`` - All. Returns all robots from the server without applying a filter. Same results as the `api/Robots` endpoint
-``1`` - Land. Filters the robots to only return the ones with the Land category
-``2`` - Flying. Filters the robots to only return the ones with the Flying category
+* ``0`` - All. Returns all robots from the server without applying a filter. Same results as the `api/Robots` endpoint
+* ``1`` - Land. Filters the robots to only return the ones with the Land category
+* ``2`` - Flying. Filters the robots to only return the ones with the Flying category
 
 ## Reports
 
