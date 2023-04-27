@@ -8,10 +8,7 @@ namespace RobotApocalypse.Models
         [ForeignKey("Survivor")]
         public long ReporterId { get; set; }
 
-        [Required]
-        public virtual Survivor Reporter { get; set; }
-
         [ForeignKey("Survivor")]
-        public long InfectedSurvivorId { get; set; }
+        public long SurvivorId { get; set; }
     }
 }

@@ -1,22 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using RobotApocalypse.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace RobotApocalypse.Models
+namespace RobotApocalypse.Dtos
 {
-    public class Survivor
+    public class SurvivorDto
     {
-        [Key]
-        public long Id { get; set; }
-
-        [Required]
-        [MaxLength(100)]
         public string Name { get; set; }
 
-        [Required]
         public int Age { get; set; }
 
-        [Required]
-        [MaxLength(10)]
         public string Gender { get; set; }
 
         public bool IsInfected { get; set; } = false;
@@ -25,7 +17,7 @@ namespace RobotApocalypse.Models
 
         public double LastLocationLongitude { get; set; }
 
-        public virtual IEnumerable<SurvivorResource> SurvivorResources { get; set; }
+        public virtual IEnumerable<Resource> Resources { get; set; }
 
         public virtual IEnumerable<ReportedInfection> InfectionReports { get; set; }
     }

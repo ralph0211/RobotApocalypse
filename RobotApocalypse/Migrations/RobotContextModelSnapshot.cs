@@ -16,30 +16,17 @@ namespace RobotApocalypse.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
-            modelBuilder.Entity("ResourceSurvivor", b =>
-                {
-                    b.Property<int>("ResourcesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<long>("SurvivorId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ResourcesId", "SurvivorId");
-
-                    b.HasIndex("SurvivorId");
-
-                    b.ToTable("ResourceSurvivor");
-                });
-
             modelBuilder.Entity("RobotApocalypse.Models.ReportedInfection", b =>
                 {
                     b.Property<long>("ReporterId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("InfectedSurvivorId")
+                    b.Property<long>("SurvivorId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ReporterId", "InfectedSurvivorId");
+                    b.HasKey("ReporterId", "SurvivorId");
+
+                    b.HasIndex("SurvivorId");
 
                     b.ToTable("ReportedInfections");
                 });
@@ -130,30 +117,13 @@ namespace RobotApocalypse.Migrations
                     b.ToTable("SurvivorResources");
                 });
 
-            modelBuilder.Entity("ResourceSurvivor", b =>
+            modelBuilder.Entity("RobotApocalypse.Models.ReportedInfection", b =>
                 {
-                    b.HasOne("RobotApocalypse.Models.Resource", null)
-                        .WithMany()
-                        .HasForeignKey("ResourcesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("RobotApocalypse.Models.Survivor", null)
-                        .WithMany()
+                        .WithMany("InfectionReports")
                         .HasForeignKey("SurvivorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("RobotApocalypse.Models.ReportedInfection", b =>
-                {
-                    b.HasOne("RobotApocalypse.Models.Survivor", "Reporter")
-                        .WithMany("InfectionReports")
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reporter");
                 });
 
             modelBuilder.Entity("RobotApocalypse.Models.SurvivorResource", b =>
@@ -164,20 +134,20 @@ namespace RobotApocalypse.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RobotApocalypse.Models.Survivor", "Survivor")
-                        .WithMany()
+                    b.HasOne("RobotApocalypse.Models.Survivor", null)
+                        .WithMany("SurvivorResources")
                         .HasForeignKey("SurvivorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Resource");
-
-                    b.Navigation("Survivor");
                 });
 
             modelBuilder.Entity("RobotApocalypse.Models.Survivor", b =>
                 {
                     b.Navigation("InfectionReports");
+
+                    b.Navigation("SurvivorResources");
                 });
 #pragma warning restore 612, 618
         }

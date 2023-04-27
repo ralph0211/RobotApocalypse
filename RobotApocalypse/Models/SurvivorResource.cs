@@ -10,5 +10,7 @@ namespace RobotApocalypse.Models
 
         [ForeignKey("Resource")]
         public int ResourceId { get; set;}
+
+        public virtual Resource Resource { get; set; }
     }
 }

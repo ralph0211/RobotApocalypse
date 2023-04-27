@@ -25,7 +25,7 @@ namespace RobotApocalypse.Controllers
 
         // GET: api/Survivors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Survivor>>> GetSurvivors()
+        public async Task<ActionResult<IEnumerable<SurvivorDto>>> GetSurvivors()
         {
             if (_context.Survivors == null)
             {
@@ -34,50 +34,63 @@ namespace RobotApocalypse.Controllers
 
             var survivors = await _context.Survivors
                 .Include(s => s.InfectionReports)
+                .Include(s => s.SurvivorResources).ThenInclude(sr => sr.Resource)
                 .ToListAsync();
 
-            var reportedInfections = await _context.ReportedInfections.ToListAsync();
-
-            survivors = survivors.Select(s => new Survivor
+            var ret = survivors.Select(s => new SurvivorDto
             {
-                Id = s.Id,
                 Name = s.Name,
                 Age = s.Age,
                 Gender = s.Gender,
                 IsInfected = s.IsInfected,
                 LastLocationLatitude = s.LastLocationLatitude,
                 LastLocationLongitude = s.LastLocationLongitude,
-                Resources = s.Resources,
-                InfectionReports = reportedInfections.Where(ir => ir.InfectedSurvivorId == s.Id)
-                    .ToList()
+                Resources = s.SurvivorResources.Select(sr => sr.Resource),
+                InfectionReports = s.InfectionReports
             }).ToList();
 
-            var options = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.Preserve
-            };
+            //var options = new JsonSerializerOptions
+            //{
+            //    ReferenceHandler = ReferenceHandler.Preserve
+            //};
 
-            var json = JsonSerializer.Serialize(survivors, options);
+            //var json = JsonSerializer.Serialize(survivors, options);
 
-            return Content(json, "application/json");
+            //return Content(json, "application/json");
+            return ret;
         }
 
         // GET: api/Survivors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Survivor>> GetSurvivor(long id)
+        public async Task<ActionResult<SurvivorDto>> GetSurvivor(long id)
         {
           if (_context.Survivors == null)
           {
               return NotFound();
           }
-            var survivor = await _context.Survivors.FindAsync(id);
+            var survivor = await _context.Survivors
+                .Include(s => s.InfectionReports)
+                .Include(s => s.SurvivorResources).ThenInclude(sr => sr.Resource)
+                .FirstOrDefaultAsync(s => s.Id == id);
 
             if (survivor == null)
             {
                 return NotFound();
             }
 
-            return survivor;
+            var ret = new SurvivorDto
+            {
+                Name = survivor.Name,
+                Age = survivor.Age,
+                Gender = survivor.Gender,
+                IsInfected = survivor.IsInfected,
+                LastLocationLatitude = survivor.LastLocationLatitude,
+                LastLocationLongitude = survivor.LastLocationLongitude,
+                Resources = survivor.SurvivorResources.Select(sr => sr.Resource),
+                InfectionReports = survivor.InfectionReports
+            };
+
+            return ret;
         }
 
         // PUT: api/Survivors/5

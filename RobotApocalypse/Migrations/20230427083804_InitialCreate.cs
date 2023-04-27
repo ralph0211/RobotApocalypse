@@ -48,37 +48,13 @@ namespace RobotApocalypse.Migrations
                 columns: table => new
                 {
                     ReporterId = table.Column<long>(type: "INTEGER", nullable: false),
-                    InfectedSurvivorId = table.Column<long>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReportedInfections", x => new { x.ReporterId, x.InfectedSurvivorId });
-                    table.ForeignKey(
-                        name: "FK_ReportedInfections_Survivors_ReporterId",
-                        column: x => x.ReporterId,
-                        principalTable: "Survivors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ResourceSurvivor",
-                columns: table => new
-                {
-                    ResourcesId = table.Column<int>(type: "INTEGER", nullable: false),
                     SurvivorId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ResourceSurvivor", x => new { x.ResourcesId, x.SurvivorId });
+                    table.PrimaryKey("PK_ReportedInfections", x => new { x.ReporterId, x.SurvivorId });
                     table.ForeignKey(
-                        name: "FK_ResourceSurvivor_Resources_ResourcesId",
-                        column: x => x.ResourcesId,
-                        principalTable: "Resources",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ResourceSurvivor_Survivors_SurvivorId",
+                        name: "FK_ReportedInfections_Survivors_SurvivorId",
                         column: x => x.SurvivorId,
                         principalTable: "Survivors",
                         principalColumn: "Id",
@@ -121,8 +97,8 @@ namespace RobotApocalypse.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ResourceSurvivor_SurvivorId",
-                table: "ResourceSurvivor",
+                name: "IX_ReportedInfections_SurvivorId",
+                table: "ReportedInfections",
                 column: "SurvivorId");
 
             migrationBuilder.CreateIndex(
@@ -136,9 +112,6 @@ namespace RobotApocalypse.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ReportedInfections");
-
-            migrationBuilder.DropTable(
-                name: "ResourceSurvivor");
 
             migrationBuilder.DropTable(
                 name: "SurvivorResources");

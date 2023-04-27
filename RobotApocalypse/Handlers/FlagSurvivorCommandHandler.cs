@@ -29,7 +29,7 @@ namespace RobotApocalypse.Handlers
                 throw new EntityNotFoundException("The reported survivor has not been found");
             }
 
-            var alreadyReported = await _context.ReportedInfections.FirstOrDefaultAsync(ri => ri.InfectedSurvivorId == request.InfectedSurvivorId && ri.ReporterId == request.ReporterId);
+            var alreadyReported = await _context.ReportedInfections.FirstOrDefaultAsync(ri => ri.SurvivorId == request.InfectedSurvivorId && ri.ReporterId == request.ReporterId);
             if (alreadyReported != null)
             {
                 throw new DuplicateReportException("This reporter has already reported the survivor. Cannot add duplicate report!");
@@ -38,12 +38,12 @@ namespace RobotApocalypse.Handlers
             var report = new ReportedInfection
             {
                 ReporterId = request.ReporterId,
-                InfectedSurvivorId = request.InfectedSurvivorId,
+                SurvivorId = request.InfectedSurvivorId,
             };
             _context.ReportedInfections.Add(report);
             await _context.SaveChangesAsync();
 
-            var reportedInfectionsCount = await _context.ReportedInfections.Where(ri => ri.InfectedSurvivorId == request.InfectedSurvivorId).CountAsync();
+            var reportedInfectionsCount = await _context.ReportedInfections.Where(ri => ri.SurvivorId == request.InfectedSurvivorId).CountAsync();
 
             if (reportedInfectionsCount > 2)
             {
