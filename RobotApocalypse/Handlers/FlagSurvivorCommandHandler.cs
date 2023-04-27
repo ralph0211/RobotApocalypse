@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RobotApocalypse.Data;
+using RobotApocalypse.Dtos;
 using RobotApocalypse.Exceptions;
 using RobotApocalypse.Models;
 
-namespace RobotApocalypse.Dtos
+namespace RobotApocalypse.Handlers
 {
     public class FlagSurvivorCommandHandler : IRequestHandler<FlagSurvivorCommandDto, string>
     {
@@ -16,8 +17,6 @@ namespace RobotApocalypse.Dtos
         }
         public async Task<string> Handle(FlagSurvivorCommandDto request, CancellationToken cancellationToken)
         {
-            //pass reporter id and infected id. 
-            //if 3 reports, survivor is marked as infected
             var reporter = await _context.Survivors.FindAsync(request.ReporterId);
             if (reporter == null)
             {
@@ -28,6 +27,12 @@ namespace RobotApocalypse.Dtos
             if (infectedSurvivor == null)
             {
                 throw new EntityNotFoundException("The reported survivor has not been found");
+            }
+
+            var alreadyReported = await _context.ReportedInfections.FirstOrDefaultAsync(ri => ri.InfectedSurvivorId == request.InfectedSurvivorId && ri.ReporterId == request.ReporterId);
+            if (alreadyReported != null)
+            {
+                throw new DuplicateReportException("This reporter has already reported the survivor. Cannot add duplicate report!");
             }
 
             var report = new ReportedInfection

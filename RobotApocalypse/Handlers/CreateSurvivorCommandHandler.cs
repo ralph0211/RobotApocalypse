@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using RobotApocalypse.Data;
 using RobotApocalypse.Dtos;
 using RobotApocalypse.Models;
@@ -31,12 +30,11 @@ namespace RobotApocalypse.Handlers
             _context.Survivors.Add(survivor);
             await _context.SaveChangesAsync(cancellationToken);
 
-            if (request.Resources.Any())
+            if (request.ResourceIds.Any())
             {
-                var resToSave = new List<SurvivorResource>();
-                foreach(var resourceId in request.Resources)
+                foreach(var resourceId in request.ResourceIds)
                 {
-                    resToSave.Add(
+                    _context.SurvivorResources.Add(
                         new SurvivorResource
                             {
                                 ResourceId = resourceId,
@@ -44,7 +42,7 @@ namespace RobotApocalypse.Handlers
                             });
                 }
 
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
             }
 
             return survivor.Id;

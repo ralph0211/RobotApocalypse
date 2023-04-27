@@ -6,7 +6,6 @@ using RobotApocalypse.Dtos;
 using RobotApocalypse.Models;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using RobotApocalypse.Exceptions;
 
 namespace RobotApocalypse.Controllers
@@ -176,6 +175,9 @@ namespace RobotApocalypse.Controllers
                 var response = await _mediator.Send(request);
                 return Ok(response);
             } catch (EntityNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            } catch (DuplicateReportException ex)
             {
                 return BadRequest(ex.Message);
             } catch (Exception ex)

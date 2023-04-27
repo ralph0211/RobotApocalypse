@@ -18,7 +18,7 @@ namespace RobotApocalypse.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,9 +31,9 @@ namespace RobotApocalypse.Migrations
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Age = table.Column<int>(type: "INTEGER", nullable: false),
-                    Gender = table.Column<string>(type: "TEXT", nullable: false),
+                    Gender = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
                     IsInfected = table.Column<bool>(type: "INTEGER", nullable: false),
                     LastLocationLatitude = table.Column<double>(type: "REAL", nullable: false),
                     LastLocationLongitude = table.Column<double>(type: "REAL", nullable: false)
@@ -53,12 +53,6 @@ namespace RobotApocalypse.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ReportedInfections", x => new { x.ReporterId, x.InfectedSurvivorId });
-                    table.ForeignKey(
-                        name: "FK_ReportedInfections_Survivors_InfectedSurvivorId",
-                        column: x => x.InfectedSurvivorId,
-                        principalTable: "Survivors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ReportedInfections_Survivors_ReporterId",
                         column: x => x.ReporterId,
@@ -91,6 +85,30 @@ namespace RobotApocalypse.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SurvivorResources",
+                columns: table => new
+                {
+                    SurvivorId = table.Column<long>(type: "INTEGER", nullable: false),
+                    ResourceId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SurvivorResources", x => new { x.SurvivorId, x.ResourceId });
+                    table.ForeignKey(
+                        name: "FK_SurvivorResources_Resources_ResourceId",
+                        column: x => x.ResourceId,
+                        principalTable: "Resources",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SurvivorResources_Survivors_SurvivorId",
+                        column: x => x.SurvivorId,
+                        principalTable: "Survivors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Resources",
                 columns: new[] { "Id", "Name" },
@@ -103,14 +121,14 @@ namespace RobotApocalypse.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportedInfections_InfectedSurvivorId",
-                table: "ReportedInfections",
-                column: "InfectedSurvivorId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ResourceSurvivor_SurvivorId",
                 table: "ResourceSurvivor",
                 column: "SurvivorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SurvivorResources_ResourceId",
+                table: "SurvivorResources",
+                column: "ResourceId");
         }
 
         /// <inheritdoc />
@@ -121,6 +139,9 @@ namespace RobotApocalypse.Migrations
 
             migrationBuilder.DropTable(
                 name: "ResourceSurvivor");
+
+            migrationBuilder.DropTable(
+                name: "SurvivorResources");
 
             migrationBuilder.DropTable(
                 name: "Resources");

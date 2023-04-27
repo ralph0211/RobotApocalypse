@@ -15,6 +15,6 @@ namespace RobotApocalypse.Dtos
 
         public double LastLocationLongitude { get; set; }
 
-        public IEnumerable<int> Resources { get; set; }
+        public IEnumerable<int> ResourceIds { get; set; }
     }
 }

@@ -26,30 +26,18 @@ namespace RobotApocalypse.Data
                 new Resource { Id=4,Name="Ammunition"}
                 );
 
-            modelBuilder.Entity<Survivor>().HasMany(s => s.Resources);
+            modelBuilder.Entity<Survivor>().HasMany(s => s.Resources).WithMany();
 
             modelBuilder.Entity<SurvivorResource>()
-                .HasOne(sr => sr.Resource)
-                .WithMany()
-                .HasForeignKey(sr => sr.ResourceId);
+                .HasKey(sr => new { sr.SurvivorId, sr.ResourceId });
 
-            modelBuilder.Entity<SurvivorResource>()
-                .HasOne(sr => sr.Survivor)
-                .WithMany()
-                .HasForeignKey(sr => sr.SurvivorId);
+            modelBuilder.Entity<ReportedInfection>()
+                .HasOne(r => r.Reporter)
+                .WithMany(s => s.InfectionReports)
+                .HasForeignKey(r => r.ReporterId);
 
             modelBuilder.Entity<ReportedInfection>()
                 .HasKey(ri => new { ri.ReporterId, ri.InfectedSurvivorId });
-
-            modelBuilder.Entity<ReportedInfection>()
-                .HasOne(ri => ri.Reporter)
-                .WithMany(s => s.InfectionReports)
-                .HasForeignKey(ri => ri.ReporterId);
-
-            modelBuilder.Entity<ReportedInfection>()
-                .HasOne(ri => ri.InfectedSurvivor)
-                .WithMany()
-                .HasForeignKey(ri => ri.InfectedSurvivorId);
         }
 
         public DbSet<Survivor> Survivors { get; set; }

@@ -1,15 +1,14 @@
-﻿namespace RobotApocalypse.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RobotApocalypse.Models
 {
     public class SurvivorResource
     {
-        public long Id { get; set; }
-
+        [ForeignKey("Survivor")]
         public long SurvivorId { get; set;}
 
-        public virtual Survivor Survivor { get; set;}
-
+        [ForeignKey("Resource")]
         public int ResourceId { get; set;}
-
-        public virtual Resource Resource { get; set;}
     }
 }
