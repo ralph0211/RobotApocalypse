@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  robotapocalypse:
+    image: ${DOCKER_REGISTRY-}robotapocalypse
+    build:
+      context: .
+      dockerfile: RobotApocalypse\Dockerfile
