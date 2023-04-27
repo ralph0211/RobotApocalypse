@@ -1,14 +1,14 @@
 # Robot Apocalypse
 
-This is a REST API built using .NET 6 that stores information about survivors and the resources they own. This is a bare minimum fulfilment of the specifications of the project. Most of the endpoints are the default scaffolded by .NET. However, a few have been updated to demonstrate use of MediatR
+This is a REST API built using .NET 6 that stores information about survivors and the resources they own. This is a bare minimum fulfilment of the specifications of the project.
 
 ## Setup
 
-### Database Setup
-In the project root path, execute the following command:
-`dotnet ef database update`
+### Running the project
+The project runs in a Docker container on port `51952`.
 
-The database is a Sqlite database named Apocalypse.db which will be added to the project root.
+### Database Setup
+The database has been pre-populated with Survivors and Resources, to make the application useable out of the box
 
 ## Use Cases
 
